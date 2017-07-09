@@ -13,7 +13,8 @@ Power supply, voltage divider for the serial connection as well as the capacitor
 # Compile reset program
 To reset the Arduino without influencing any later communication, the serial port has to be opened without reading from it (like normal terminal programs would). Therefore the little helper program "arduino_reset" exists, which can be compiled by
 
-'''gcc -Wall arduino_reset.cc -o arduino_reset'''
+```bash
+gcc -Wall arduino_reset.cc -o arduino_reset```
 
 # Modified avrdude script
 
@@ -34,15 +35,17 @@ afterwards you can connect for example with minicom and pipe the output to a fil
 '''minicom -D /dev/rfcomm0  -C autopilot.log'''
 
 To run an rfcomm server on linux you should check if there is a serial port already registered, and note its port:
-'''sdptool browse local'''
+```bash
+sdptool browse local```
 if there is none add it:
-'''sdptool add --channel=22 SP'''
+```bash
+sdptool add --channel=22 SP```
 and bind it:
-'''sudo rfcomm listen /dev/rfcomm0 22'''
+```bash
+sudo rfcomm listen /dev/rfcomm0 22```
 afterwards you can connect with rfcomm to it:
-'''minicom -D /dev/rfcomm0'''
-
-sdptool browse local
+```bash
+minicom -D /dev/rfcomm0```
 
 
 
