@@ -23,3 +23,26 @@ The modified avrdude script kills all programs that could prevent the serial por
 # Todo
 
 The modified script and the reset program aren't very generic. It is assumed, that the serial bluetooth port is /dev/rfcomm0 and that the original avrdude binary can be found at "/usr/share/arduino/hardware/tools/avr/bin/avrdude_orig"
+
+# Remarks
+
+Bluez newest version (as of July 2017) seems to have some problems with rfcomm or dropped the support for it.
+Therefore on Archlinux there was the need to install '''bluez-utils-compat''' and to modify '''/etc/systemd/system/dbus-org.bluez.service''' to run '''ExecStart=/usr/lib/bluetooth/bluetoothd --compat'''
+To connect to the HC-05 running as a server you need to bind pair (via gui or command line) and bind the rfcomm port (dummy MAC address):
+'''sudo rfcomm bind hci0 98:D3:31:FB:0C:2F'''
+afterwards you can connect for example with minicom and pipe the output to a file:
+'''minicom -D /dev/rfcomm0  -C autopilot.log'''
+
+To run an rfcomm server on linux you should check if there is a serial port already registered, and note its port:
+'''sdptool browse local'''
+if there is none add it:
+'''sdptool add --channel=22 SP'''
+and bind it:
+'''sudo rfcomm listen /dev/rfcomm0 22'''
+afterwards you can connect with rfcomm to it:
+'''minicom -D /dev/rfcomm0'''
+
+sdptool browse local
+
+
+
